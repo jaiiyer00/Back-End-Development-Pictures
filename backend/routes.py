@@ -50,24 +50,23 @@ def get_picture_by_id(id):
         if picture.get("id") == id:
             return jsonify(picture), 200
             
-    # Return 404 if the picture is not found
     return jsonify({"message": f"Picture with id {id} not found"}), 404
 
 
 ######################################################################
-# CREATE A PICTURE
+# CREATE A PICTURE (EXERCISE 4 UPDATED)
 ######################################################################
 @app.route("/picture", methods=["POST"])
 def create_picture():
     """Creates a new picture resource from incoming JSON body"""
     new_picture = request.get_json()
     if not new_picture:
-        return jsonify({"message": "Invalid input data"}), 400
+        return jsonify({"Message": "Invalid input data"}), 400
 
-    # Quick check to ensure we don't duplicate an ID that already exists
+    # Exercise 4 specific check: Return 302 and exact string matching if duplicate ID exists
     for picture in data:
         if picture.get("id") == new_picture.get("id"):
-            return jsonify({"message": f"Picture with id {new_picture.get('id')} already exists"}), 409
+            return jsonify({"Message": f"picture with id {new_picture['id']} already present"}), 302
 
     data.append(new_picture)
     return jsonify(new_picture), 201
@@ -86,7 +85,6 @@ def update_picture(id):
 
     for index, picture in enumerate(data):
         if picture.get("id") == id:
-            # Overwrite/update the item at this index location
             data[index] = updated_data
             return jsonify(data[index]), 200
 
@@ -101,7 +99,6 @@ def delete_picture(id):
     for index, picture in enumerate(data):
         if picture.get("id") == id:
             del data[index]
-            # Specification requires empty body response for 204
             return "", 204
 
     return jsonify({"message": f"Picture with id {id} not found"}), 404
