@@ -54,7 +54,7 @@ def get_picture_by_id(id):
 
 
 ######################################################################
-# CREATE A PICTURE (EXERCISE 4 UPDATED)
+# CREATE A PICTURE
 ######################################################################
 @app.route("/picture", methods=["POST"])
 def create_picture():
@@ -63,7 +63,6 @@ def create_picture():
     if not new_picture:
         return jsonify({"Message": "Invalid input data"}), 400
 
-    # Exercise 4 specific check: Return 302 and exact string matching if duplicate ID exists
     for picture in data:
         if picture.get("id") == new_picture.get("id"):
             return jsonify({"Message": f"picture with id {new_picture['id']} already present"}), 302
@@ -72,7 +71,7 @@ def create_picture():
     return jsonify(new_picture), 201
 
 ######################################################################
-# UPDATE A PICTURE
+# UPDATE A PICTURE (EXERCISE 5 UPDATED)
 ######################################################################
 
 
@@ -88,7 +87,8 @@ def update_picture(id):
             data[index] = updated_data
             return jsonify(data[index]), 200
 
-    return jsonify({"message": f"Picture with id {id} not found"}), 404
+    # Exercise 5 exact error message requirement
+    return jsonify({"message": "picture not found"}), 404
 
 ######################################################################
 # DELETE A PICTURE
