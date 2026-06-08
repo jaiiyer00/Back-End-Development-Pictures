@@ -71,7 +71,7 @@ def create_picture():
     return jsonify(new_picture), 201
 
 ######################################################################
-# UPDATE A PICTURE (EXERCISE 5 UPDATED)
+# UPDATE A PICTURE
 ######################################################################
 
 
@@ -87,11 +87,10 @@ def update_picture(id):
             data[index] = updated_data
             return jsonify(data[index]), 200
 
-    # Exercise 5 exact error message requirement
     return jsonify({"message": "picture not found"}), 404
 
 ######################################################################
-# DELETE A PICTURE
+# DELETE A PICTURE (EXERCISE 6 UPDATED)
 ######################################################################
 @app.route("/picture/<int:id>", methods=["DELETE"])
 def delete_picture(id):
@@ -99,6 +98,8 @@ def delete_picture(id):
     for index, picture in enumerate(data):
         if picture.get("id") == id:
             del data[index]
+            # Specification requires empty body response for 204 No Content
             return "", 204
 
-    return jsonify({"message": f"Picture with id {id} not found"}), 404
+    # Exercise 6 exact error message requirement
+    return jsonify({"message": "picture not found"}), 404
